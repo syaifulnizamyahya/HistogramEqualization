@@ -106,6 +106,7 @@ void equalizeHist8bit(const Mat &_src, Mat &_dst)
 
 void equalizeHist16bit(const Mat &_src, Mat &_dst)
 {
+	cout << "Using vector" << endl;
 	_dst = _src.clone();
 
 	const int intSize = 65536;
@@ -195,7 +196,109 @@ void equalizeHist16bit(const Mat &_src, Mat &_dst)
 			//_dst.at<uchar>(y, x) = saturate_cast<uchar>(Sk[_src.at<uchar>(y, x)]);
 	/*
 	*/
-	cin.get();
+	//cin.get();
+}
+
+void equalizeHist16bit2(const Mat &_src, Mat &_dst)
+{
+	cout << "Using array" << endl;
+	_dst = _src.clone();
+
+	const int intSize = 65536;
+	// Generate the histogram
+	//array<int, intSize> histogram;
+	//vector<int> histogram;
+	//int histogram[intSize];
+	int *histogram = new int[intSize];
+
+	// initialize all intensity values to 0
+	for (int i = 0; i < intSize; i++)
+	{
+		histogram[i] = 0;
+		//histogram.push_back(0);
+	}
+
+	// calculate the no of pixels for each intensity values
+	for (int y = 0; y < _src.rows; y++)
+		for (int x = 0; x < _src.cols; x++)
+			//histogram[(int)_src.at<uchar>(y, x)]++;
+			histogram[(int)_src.at<unsigned short int>(y, x)]++;
+
+	// Caluculate the size of image
+	int size = _src.rows * _src.cols;
+	float alpha = double(intSize - 1) / size;
+
+	// Calculate the probability of each intensity
+	//float PrRk[intSize];
+	//array<float, intSize> PrRk;
+	//vector<float> PrRk;
+	float *PrRk= new float[intSize];
+
+	for (int i = 0; i < intSize; i++)
+	{
+		PrRk[i] = (double)histogram[i] / size;
+		//PrRk.push_back((double)histogram[i] / size);
+	}
+
+	// Generate cumulative frequency histogram
+	//int cumhistogram[intSize];
+	//array<int, intSize> cumhistogram;
+	//vector<int> cumhistogram;
+	int *cumhistogram = new int[intSize];
+	cumhistogram[0] = histogram[0];
+	//cumhistogram.push_back(histogram[0]);
+
+	for (int i = 1; i < intSize; i++)
+	{
+		cumhistogram[i] = histogram[i] + cumhistogram[i - 1];
+		//cumhistogram.push_back(histogram[i] + cumhistogram[i - 1]);
+	}
+
+	//Scale the histogram
+	//array<int, intSize> Sk;
+	int *Sk = new int[intSize];
+	//vector<int> Sk;
+	//int Sk[intSize];
+	for (int i = 0; i < intSize; i++)
+	{
+		Sk[i] = cvRound((double)cumhistogram[i] * alpha);
+		//Sk.push_back(cvRound((double)cumhistogram[i] * alpha));
+	}
+
+	// Generate the equlized histogram
+	//array<float, intSize> PsSk;
+	//vector<float> PsSk;
+	float *PsSk = new float[intSize];
+	//float PsSk[intSize];
+	for (int i = 0; i < intSize; i++)
+	{
+		PsSk[i] = 0;
+		//PsSk.push_back(0);
+	}
+
+	for (int i = 0; i < intSize; i++)
+	{
+		PsSk[Sk[i]] += PrRk[i];
+	}
+
+	//int final[intSize];
+	//array<int, intSize> final;
+	//vector<int> final;
+	int *final = new int[intSize];
+	for (int i = 0; i < intSize; i++)
+		final[i] = cvRound(PsSk[i] * (intSize - 1));
+		//final.push_back(cvRound(PsSk[i] * (intSize - 1)));
+
+	// Generate the equlized image
+	_dst = _src.clone();
+
+	for (int y = 0; y < _src.rows; y++)
+		for (int x = 0; x < _src.cols; x++)
+			_dst.at<unsigned short int>(y, x) = saturate_cast<unsigned short int>(Sk[_src.at<unsigned short int>(y, x)]);
+	//_dst.at<uchar>(y, x) = saturate_cast<uchar>(Sk[_src.at<uchar>(y, x)]);
+/*
+*/
+	//cin.get();
 }
 
 int main(int argc, char** argv)
@@ -247,7 +350,7 @@ int main(int argc, char** argv)
 	}
 	else if (image.type() == 2)
 	{
-		equalizeHist16bit(image, resultImage);
+		equalizeHist16bit2(image, resultImage);
 	}
 
 	// select small region
