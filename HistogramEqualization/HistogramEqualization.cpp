@@ -108,32 +108,18 @@ void equalizeHist16bit(const Mat &_src, Mat &_dst)
 {
 	_dst = _src.clone();
 
-	//const int intSize = 42720;
 	const int intSize = 65536;
-	//const int intSize = 256;
 	// Generate the histogram
-	int histogram[intSize];
-	//imhist(_src, histogram);
+	//array<int, intSize> histogram;
+	vector<int> histogram;
+	//int histogram[intSize];
 
 	// initialize all intensity values to 0
 	for (int i = 0; i < intSize; i++)
 	{
-		histogram[i] = 0;
+		//histogram[i] = 0;
+		histogram.push_back(0);
 	}
-
-	//unsigned short int usi;
-	//usi = -1;
-	//cout << usi << endl;
-	//usi = 65535;
-	//cout << usi << endl;
-	//usi = 65536;
-	//cout << usi << endl;
-	//cout << "size ushort int" << sizeof(unsigned short int) << endl;
-
-	cout << _src.depth() << endl;
-	cout << _src.channels() << endl;
-	//cout << _src.at<uchar>(0, 0) << endl;
-	cout << _src.at<unsigned short int>(0, 0) << endl;
 
 	// calculate the no of pixels for each intensity values
 	for (int y = 0; y < _src.rows; y++)
@@ -146,35 +132,46 @@ void equalizeHist16bit(const Mat &_src, Mat &_dst)
 	float alpha = double(intSize-1) / size;
 
 	// Calculate the probability of each intensity
-	float PrRk[intSize];
+	//float PrRk[intSize];
+	//array<float, intSize> PrRk;
+	vector<float> PrRk;
 	for (int i = 0; i < intSize; i++)
 	{
-		PrRk[i] = (double)histogram[i] / size;
+		//PrRk[i] = (double)histogram[i] / size;
+		PrRk.push_back((double)histogram[i] / size);
 	}
 
 	// Generate cumulative frequency histogram
-	int cumhistogram[intSize];
-	//cumhist(histogram, cumhistogram);
-	cumhistogram[0] = histogram[0];
+	//int cumhistogram[intSize];
+	//array<int, intSize> cumhistogram;
+	vector<int> cumhistogram;
+	//cumhistogram[0] = histogram[0];
+	cumhistogram.push_back(histogram[0]);
 
 	for (int i = 1; i < intSize; i++)
 	{
-		cumhistogram[i] = histogram[i] + cumhistogram[i - 1];
+		//cumhistogram[i] = histogram[i] + cumhistogram[i - 1];
+		cumhistogram.push_back(histogram[i] + cumhistogram[i - 1]);
 	}
 
-	/*
-	 //Scale the histogram
-	int Sk[intSize];
+	//Scale the histogram
+	//array<int, intSize> Sk;
+	vector<int> Sk;
+	//int Sk[intSize];
 	for (int i = 0; i < intSize; i++)
 	{
-		Sk[i] = cvRound((double)cumhistogram[i] * alpha);
+		//Sk[i] = cvRound((double)cumhistogram[i] * alpha);
+		Sk.push_back(cvRound((double)cumhistogram[i] * alpha));
 	}
 
 	// Generate the equlized histogram
-	float PsSk[intSize];
+	//array<float, intSize> PsSk;
+	vector<float> PsSk;
+	//float PsSk[intSize];
 	for (int i = 0; i < intSize; i++)
 	{
-		PsSk[i] = 0;
+		//PsSk[i] = 0;
+		PsSk.push_back(0);
 	}
 
 	for (int i = 0; i < intSize; i++)
@@ -182,10 +179,12 @@ void equalizeHist16bit(const Mat &_src, Mat &_dst)
 		PsSk[Sk[i]] += PrRk[i];
 	}
 
-	int final[intSize];
+	//int final[intSize];
+	//array<int, intSize> final;
+	vector<int> final;
 	for (int i = 0; i < intSize; i++)
-		final[i] = cvRound(PsSk[i] * (intSize-1));
-
+		//final[i] = cvRound(PsSk[i] * (intSize - 1));
+		final.push_back(cvRound(PsSk[i] * (intSize-1)));
 
 	// Generate the equlized image
 	_dst = _src.clone();
@@ -194,6 +193,7 @@ void equalizeHist16bit(const Mat &_src, Mat &_dst)
 		for (int x = 0; x < _src.cols; x++)
 			_dst.at<unsigned short int>(y, x) = saturate_cast<unsigned short int>(Sk[_src.at<unsigned short int>(y, x)]);
 			//_dst.at<uchar>(y, x) = saturate_cast<uchar>(Sk[_src.at<uchar>(y, x)]);
+	/*
 	*/
 	cin.get();
 }
@@ -238,6 +238,8 @@ int main(int argc, char** argv)
 	string ty = type2str(image.type());
 	cout << "Type : " << image.type() << endl;
 	cout << "Matrix: " << ty.c_str() << " " << image.cols << "x" << image.rows << endl;
+	cout << "depth : " << image.depth() << endl;
+	cout << "channels : " << image.channels() << endl;
 
 	if (image.type()==0)
 	{
