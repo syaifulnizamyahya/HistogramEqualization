@@ -43,6 +43,9 @@ void Task()
 	// save resulting equalize image as a 16 bit image
 	string outputPath = "Output\\";
 	string outputFileName = outputPath + imageName;
+	//if exist, delete
+	if (remove(outputFileName.c_str()) != 0)
+		cout << "Error deleting " << outputFileName << endl;
 	cout << "Writing image : " << outputFileName << endl;
 	try {
 		imwrite(outputFileName, resultImage);
@@ -106,14 +109,14 @@ void Dev()
 		auto a = getTickCount();
 		Histogram::equalizeHistogram(image, resultImage);
 		auto b = getTickCount();
-		cout << "8 bit operation time : " << b - a << endl;
+		cout << "8 bit histogram equalization time : " << b - a << " ticks." << endl;
 	}
 	else if (type == 2)
 	{
 		auto a = getTickCount();
 		Histogram::equalizeHistogram(image, resultImage);
 		auto b = getTickCount();
-		cout << "16 bit vector operation time : " << b - a << endl;
+		cout << "16 bit histogram equalization time : " << b - a  << " ticks."<< endl;
 	}
 	else
 	{
