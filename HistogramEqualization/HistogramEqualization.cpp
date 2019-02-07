@@ -18,7 +18,7 @@ using namespace std;
 // --TODO : perform histogram equalization *directly on the 16 - bit image*, 
 // --TODO : save the resulting equalized image(also as a 16 - bit image).
 // --TODO : write a simple class for this.
-// TODO : Write a separate class to test the above class.
+// --TODO : Write a separate class to test the above class.
 // TODO : use CMake for this task
 
 void Task()
@@ -66,9 +66,9 @@ void Dev()
 	//imageName = "Image\\8bit_grayscale_sm.png"; // by default
 
 	Mat image;
-	image = imread(imageName, IMREAD_ANYDEPTH); // Read the file
+	image = imread(imageName, IMREAD_ANYDEPTH); 
 
-	if (image.empty())                      // Check for invalid input
+	if (image.empty())
 	{
 		cout << "Could not open or find the image" << std::endl;
 		return;
@@ -104,7 +104,6 @@ void Dev()
 	if (type == 0)
 	{
 		auto a = getTickCount();
-		//Histogram::equalizeHist8Bit(image, resultImage);
 		Histogram::equalizeHistogram(image, resultImage);
 		auto b = getTickCount();
 		cout << "8 bit operation time : " << b - a << endl;
@@ -113,19 +112,13 @@ void Dev()
 	{
 		auto a = getTickCount();
 		Histogram::equalizeHistogram(image, resultImage);
-		//Histogram::equalizeHist16BitVector(image, resultImage);
 		auto b = getTickCount();
 		cout << "16 bit vector operation time : " << b - a << endl;
-
-		//a = getTickCount();
-		//Histogram::equalizeHist16BitArray(image, resultImage);
-		//b = getTickCount();
-		//cout << "16 bit array operation time  : " << b - a << endl;
 	}
 	else
 	{
 		cout << "Unsupported image" << std::endl;
-		waitKey(0);
+		return;
 	}
 
 	// get small region matrix for 16bit verification

@@ -7,20 +7,6 @@ TEST(HistogramEqualization, Valid16bitInput)
 	cv::Mat dst;
 	cv::Mat result;
 
-	//src = (cv::Mat_<ushort>(4, 4) <<
-	//		4096, 8192, 12288, 16384,
-	//		20480, 24576, 28672, 32768,
-	//		36863, 40959, 45055, 49151,
-	//		53247, 57343, 61439, 65535
-	//	);
-
-	//result = (cv::Mat_<ushort>(4, 4) <<
-	//		4096, 8192, 12288, 16384,
-	//		20480, 24576, 28672, 32768,
-	//		36863, 40959, 45055, 49151,
-	//		53247, 57343, 61439, 65535
-	//	);
-
 	src = (cv::Mat_<ushort>(4, 4) <<
 		0, 4369, 8738, 13107,
 		17476, 21845, 26214, 30583,
@@ -254,7 +240,3 @@ TEST(HistogramEqualization, Max16bitInput)
 	cv::Mat diff = dst != result;
 	EXPECT_TRUE(cv::countNonZero(diff) == 0);
 }
-
-// error test
-// null data
-// 
