@@ -9,7 +9,7 @@
 #include <opencv2/imgproc.hpp>
 #include "HistogramEqualization.h"
 #include "Helper.h"
-#include "Histogram.h"
+#include "../Histogram/Histogram.h"
 
 using namespace cv;
 using namespace std;

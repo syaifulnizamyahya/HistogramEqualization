@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Histogram.h"
 
 void Histogram::equalizeHistogram(const cv::Mat &_src, cv::Mat &_dst)
@@ -16,7 +15,8 @@ void Histogram::equalizeHistogram(const cv::Mat &_src, cv::Mat &_dst)
 	}
 	else if (type == 2)
 	{
-		equalizeHist16BitArray(_src, _dst);
+		equalizeHist16BitOpenCV(_src, _dst);
+		//equalizeHist16BitArray(_src, _dst);
 		//equalizeHist16BitVector(_src, _dst);
 	}
 	else
@@ -97,13 +97,13 @@ void Histogram::equalizeHist16BitVector(const cv::Mat &_src, cv::Mat &_dst)
 {
 	const int intSize = 65536;
 	// Generate the histogram
-	std::vector<int> histogram;
+	std::vector<int> histogram(intSize, 0);
 
 	// initialize all intensity values to 0
-	for (int i = 0; i < intSize; i++)
-	{
-		histogram.push_back(0);
-	}
+	//for (int i = 0; i < intSize; i++)
+	//{
+	//	histogram.push_back(0);
+	//}
 
 	// calculate the no of pixels for each intensity values
 	for (int y = 0; y < _src.rows; y++)
@@ -220,3 +220,119 @@ void Histogram::equalizeHist16BitArray(const cv::Mat &_src, cv::Mat &_dst)
 		for (int x = 0; x < _src.cols; x++)
 			_dst.at<unsigned short int>(y, x) = cv::saturate_cast<unsigned short int>(Sk[_src.at<unsigned short int>(y, x)]);
 }
+
+void Histogram::equalizeHist16BitOpenCV(const cv::Mat &_src, cv::Mat &_dst)
+{
+	const int hist_sz = 65536;
+	//int* pdata, int width, int height, int max_val = 255;
+	//int total = width * height;
+	//int total = _src.rows * _src.cols;
+	//int total = (int)_src.total();
+	//int intSize = max_val + 1;
+
+	_dst = _src.clone();
+
+	// Compute histogram
+	std::vector<int> hist(hist_sz, 0);
+	std::vector<int> lut(hist_sz, 0);
+	//for (int i = 0; i < total; ++i) {
+	//	hist[pdata[i]]++;
+	//}
+	// can be parallel
+	for (int y = 0; y < _src.rows; y++)
+		for (int x = 0; x < _src.cols; x++)
+			hist[(int)_src.at<unsigned short int>(y, x)]++;
+
+	// Build LUT from cumulative histrogram
+
+	// Find first non-zero bin
+	int i = 0;
+	while (!hist[i]) ++i;
+
+	int total = (int)_src.total();
+	if (hist[i] == total) 
+	{
+		//for (int j = 0; j < total; ++j) {
+		//	pdata[j] = i;
+		//}
+		_dst.setTo(i);
+		return;
+	}
+
+	// Initialize lut
+	//std::vector<int> lut(hist_sz, 0);
+	// Compute scale
+	float scale = (hist_sz - 1.f) / (total - hist[i]);
+	int sum = 0;
+
+	i++;
+
+	for (; i < hist.size(); ++i) 
+	{
+		sum += hist[i];
+		// the value is saturated in range [0, max_val]
+		//lut[i] = std::max(0, std::min(int(round(sum * scale)), hist_sz-1));
+		lut[i] = cv::saturate_cast<ushort>(sum * scale);
+	}
+
+	// Apply equalization
+	// can be parallel
+	//for (int i = 0; i < total; ++i) {
+	//	pdata[i] = lut[pdata[i]];
+	//}
+	for (int y = 0; y < _src.rows; y++)
+		for (int x = 0; x < _src.cols; x++)
+		{
+			_dst.at<unsigned short int>(y, x) = lut[(int)_src.at<unsigned short int>(y, x)];
+		}
+	//		_dst.at<unsigned short int>(y, x) = cv::saturate_cast<unsigned short int>(Sk[_src.at<unsigned short int>(y, x)]);
+
+	//for (int y = 0; y < _src.rows; y++)
+	//	for (int x = 0; x < _src.cols; x++)
+	//		_dst.at<unsigned short int>(y, x) = cv::saturate_cast<unsigned short int>(Sk[_src.at<unsigned short int>(y, x)]);
+
+}
+
+//void equalizeHistogram(int* pdata, int width, int height, int max_val = 255)
+//{
+//	int total = width * height;
+//	int n_bins = max_val + 1;
+//
+//	// Compute histogram
+//	vector<int> hist(n_bins, 0);
+//	for (int i = 0; i < total; ++i) {
+//		hist[pdata[i]]++;
+//	}
+//
+//	// Build LUT from cumulative histrogram
+//
+//	// Find first non-zero bin
+//	int i = 0;
+//	while (!hist[i]) ++i;
+//
+//	if (hist[i] == total) {
+//		for (int j = 0; j < total; ++j) {
+//			pdata[j] = i;
+//		}
+//		return;
+//	}
+//
+//	// Compute scale
+//	float scale = (n_bins - 1.f) / (total - hist[i]);
+//
+//	// Initialize lut
+//	vector<int> lut(n_bins, 0);
+//	i++;
+//
+//	int sum = 0;
+//	for (; i < hist.size(); ++i) {
+//		sum += hist[i];
+//		// the value is saturated in range [0, max_val]
+//		lut[i] = max(0, min(int(round(sum * scale)), max_val));
+//	}
+//
+//	// Apply equalization
+//	for (int i = 0; i < total; ++i) {
+//		pdata[i] = lut[pdata[i]];
+//	}
+//}

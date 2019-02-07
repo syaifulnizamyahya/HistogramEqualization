@@ -9,6 +9,7 @@ private:
 	static void equalizeHist8Bit(const cv::Mat &_src, cv::Mat &_dst);
 	static void equalizeHist16BitVector(const cv::Mat &_src, cv::Mat &_dst);
 	static void equalizeHist16BitArray(const cv::Mat &_src, cv::Mat &_dst);
+	static void equalizeHist16BitOpenCV(const cv::Mat &_src, cv::Mat &_dst);
 public:
 	static void equalizeHistogram(const cv::Mat &_src, cv::Mat &_dst);
 

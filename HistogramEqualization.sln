@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HistogramEqualization", "HistogramEqualization\HistogramEqualization.vcxproj", "{1D4896AA-3EF4-4A69-B9DB-7F83BCDC351D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Histogram", "Histogram\Histogram.vcxproj", "{26899A11-1E23-4A42-B4D9-A0913E195781}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Histogram-Test1", "Histogram-Test1\Histogram-Test1.vcxproj", "{4B1F7100-97CF-4BA1-A4C1-A11CBBCA1692}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +25,22 @@ Global
 		{1D4896AA-3EF4-4A69-B9DB-7F83BCDC351D}.Release|x64.Build.0 = Release|x64
 		{1D4896AA-3EF4-4A69-B9DB-7F83BCDC351D}.Release|x86.ActiveCfg = Release|Win32
 		{1D4896AA-3EF4-4A69-B9DB-7F83BCDC351D}.Release|x86.Build.0 = Release|Win32
+		{26899A11-1E23-4A42-B4D9-A0913E195781}.Debug|x64.ActiveCfg = Debug|x64
+		{26899A11-1E23-4A42-B4D9-A0913E195781}.Debug|x64.Build.0 = Debug|x64
+		{26899A11-1E23-4A42-B4D9-A0913E195781}.Debug|x86.ActiveCfg = Debug|Win32
+		{26899A11-1E23-4A42-B4D9-A0913E195781}.Debug|x86.Build.0 = Debug|Win32
+		{26899A11-1E23-4A42-B4D9-A0913E195781}.Release|x64.ActiveCfg = Release|x64
+		{26899A11-1E23-4A42-B4D9-A0913E195781}.Release|x64.Build.0 = Release|x64
+		{26899A11-1E23-4A42-B4D9-A0913E195781}.Release|x86.ActiveCfg = Release|Win32
+		{26899A11-1E23-4A42-B4D9-A0913E195781}.Release|x86.Build.0 = Release|Win32
+		{4B1F7100-97CF-4BA1-A4C1-A11CBBCA1692}.Debug|x64.ActiveCfg = Debug|x64
+		{4B1F7100-97CF-4BA1-A4C1-A11CBBCA1692}.Debug|x64.Build.0 = Debug|x64
+		{4B1F7100-97CF-4BA1-A4C1-A11CBBCA1692}.Debug|x86.ActiveCfg = Debug|Win32
+		{4B1F7100-97CF-4BA1-A4C1-A11CBBCA1692}.Debug|x86.Build.0 = Debug|Win32
+		{4B1F7100-97CF-4BA1-A4C1-A11CBBCA1692}.Release|x64.ActiveCfg = Release|x64
+		{4B1F7100-97CF-4BA1-A4C1-A11CBBCA1692}.Release|x64.Build.0 = Release|x64
+		{4B1F7100-97CF-4BA1-A4C1-A11CBBCA1692}.Release|x86.ActiveCfg = Release|Win32
+		{4B1F7100-97CF-4BA1-A4C1-A11CBBCA1692}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

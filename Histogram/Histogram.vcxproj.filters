@@ -15,39 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Helper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HistogramEqualization.h">
+    <ClInclude Include="Histogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="Histogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HistogramEqualization.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Helper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Image\8bit_grayscale_sm.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Image\Hilbert_Curve.256x256,16-bit_greyscale.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Image\16bit_grayscale.TIF">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Image\test.tif">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
 </Project>
