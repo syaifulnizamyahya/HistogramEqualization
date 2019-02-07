@@ -20,6 +20,7 @@ using namespace std;
 // --TODO : write a simple class for this.
 // --TODO : Write a separate class to test the above class.
 // TODO : use CMake for this task
+// TODO : visualize histogram
 
 void Task()
 {
@@ -110,6 +111,12 @@ void Dev()
 		Histogram::equalizeHistogram(image, resultImage);
 		auto b = getTickCount();
 		cout << "8 bit histogram equalization time : " << b - a << " ticks." << endl;
+		int inputhistogram[256];
+		Helper::imhist8bit(image, inputhistogram);
+		Helper::histDisplay8bit(inputhistogram, "8bit Input histogram");
+		int outputhistogram[256];
+		Helper::imhist8bit(resultImage, outputhistogram);
+		Helper::histDisplay8bit(outputhistogram, "8bit Output histogram");
 	}
 	else if (type == 2)
 	{
@@ -117,6 +124,12 @@ void Dev()
 		Histogram::equalizeHistogram(image, resultImage);
 		auto b = getTickCount();
 		cout << "16 bit histogram equalization time : " << b - a  << " ticks."<< endl;
+		//int inputhistogram[65536];
+		//Helper::imhist16bit(image, inputhistogram);
+		//Helper::histDisplay16bit(inputhistogram, "16bit Input histogram");
+		//int outputhistogram[65536];
+		//Helper::imhist16bit(resultImage, outputhistogram);
+		//Helper::histDisplay16bit(outputhistogram, "16bit Output histogram");
 	}
 	else
 	{

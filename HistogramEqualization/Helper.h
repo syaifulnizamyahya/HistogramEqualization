@@ -11,5 +11,9 @@ class Helper
 {
 public:
 	static string MatTypeToString(int type);
+	static void histDisplay8bit(int histogram[], const char* name);
+	static void imhist8bit(cv::Mat image, int histogram[]);
+	static void histDisplay16bit(int histogram[], const char* name);
+	static void imhist16bit(cv::Mat image, int histogram[]);
 };
 
